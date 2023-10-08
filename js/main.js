@@ -95,6 +95,17 @@ function renderMovies(movies) {
         const movieName = document.createElement('p');
         const movieRemoveBtn = document.createElement('button');
 
+        // const checkItemsClass = localStorage.getItem('checkItemsClass');
+        // const idElement = document.querySelector('[data-id="'+idStorage+'"]');
+        // console.log(idElement)
+        // console.log(idStorage)
+
+        // if (checkItemsClass) {
+        //     idElement.classList.remove('inactive');
+        // } else {
+        //     test(idStorage);
+        // }
+
         movieItem.dataset.id = movie.id;
 
         movieListNode.appendChild(movieItem);
@@ -117,8 +128,16 @@ function renderMovies(movies) {
                 items = document.querySelector('[data-id="'+id+'"]');
                 // console.log(items);
                 // items.classList.toggle('inactive');
-
-                test(id)
+                const checkItemsClass = items.classList.contains('inactive');
+                localStorage.setItem('checkItemsClass', checkItemsClass);
+                test(id);
+                movieListNode.append(items);
+                
+                // if (checkItemsClass) {
+                //     items.classList.remove('inactive');
+                // } else {
+                //     test(id);
+                // }
             };
         });
 
@@ -139,12 +158,13 @@ function renderMovies(movies) {
     test(idStorage)
 }
 
+// "Вычеркивание" карточки
 function test(id) {
-    const newID = id
-    // items = document.querySelector('[data-id="'+newID+'"]');
-    console.log(newID)
+    // const newID = id
+    // console.log(newID)
     const testID = document.querySelector('[data-id="'+id+'"]')
     console.log(testID)
+    // testID.classList.add('inactive')
     testID.classList.toggle('inactive')
 
     localStorage.setItem('id', id)
