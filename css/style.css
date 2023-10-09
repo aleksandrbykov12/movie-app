@@ -44,8 +44,10 @@ body {
 
 .movie__wrap {
     padding: 60px 70px;
+    max-height: 700px;
     background: #232323;
     border-radius: 20px;
+    overflow-y: auto;
 }
 
 .movie__form {
@@ -148,10 +150,10 @@ body {
     transition: scale 0.2s linear;
 }
 
-.movie__wrap {
+/* .movie__wrap {
     height: 700px;
     overflow-y: auto;
-}
+} */
 
 .inactive {
     opacity: 0.5;
