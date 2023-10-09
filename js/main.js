@@ -115,25 +115,15 @@ function renderMovies(movies) {
         movieItem.addEventListener('click', function (event) {
             if (event.target.classList.contains('movie__item')) {
                 id = movie.id;
+                const indexMovie = movies.findIndex(element => element.id === movie.id);
                 items = document.querySelector('[data-id="'+id+'"]');
 
                 inactiveElement(id);
                 // movieListNode.append(items);
 
                 movie.checked = movieCheckbox.checked;
-                saveMovies();
 
-                const indexMovie = movies.findIndex(element => element.id === movie.id);
-                console.log(indexMovie);
-
-                if (movieCheckbox.checked) {
-                    movies.splice(indexMovie, 1);
-                    movies.push(movie);
-                } else {
-                    movies.splice(indexMovie, 1)
-                    movies.unshift(movie)
-                }
-
+                movingObject(movieCheckbox, indexMovie, movie)
                 saveMovies();
                 renderMovies(movies)
             };
@@ -170,6 +160,17 @@ function checkStateCard (movieItem, movieCheckbox, movie) {
         movieItem.classList.remove('inactive');
         movieCheckbox.setAttribute('unchecked', '')
     };
+}
+
+// Перемещение объекта в конец/начало массива по нажатию
+function movingObject(movieCheckbox, indexMovie, movie) {
+    if (movieCheckbox.checked) {
+        movies.splice(indexMovie, 1);
+        movies.push(movie);
+    } else {
+        movies.splice(indexMovie, 1)
+        movies.unshift(movie)
+    }
 }
 
 // Поиск объекта в массиве 
