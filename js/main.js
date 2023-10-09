@@ -130,10 +130,11 @@ function renderMovies(movies) {
                     movies.splice(indexMovie, 1);
                     movies.push(movie);
                 } else {
-                    movies.splice(indexMovie,1)
+                    movies.splice(indexMovie, 1)
                     movies.unshift(movie)
                 }
 
+                saveMovies();
                 renderMovies(movies)
             };
         });
