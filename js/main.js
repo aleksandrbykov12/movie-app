@@ -121,7 +121,20 @@ function renderMovies(movies) {
                 // movieListNode.append(items);
 
                 movie.checked = movieCheckbox.checked;
-                saveMovies()
+                saveMovies();
+
+                const indexMovie = movies.findIndex(element => element.id === movie.id);
+                console.log(indexMovie);
+
+                if (movieCheckbox.checked) {
+                    movies.splice(indexMovie, 1);
+                    movies.push(movie);
+                } else {
+                    movies.splice(indexMovie,1)
+                    movies.unshift(movie)
+                }
+
+                renderMovies(movies)
             };
         });
 
