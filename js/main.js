@@ -12,14 +12,10 @@ const movieListNode = document.querySelector('.movie__list');
 
 // Global Variables
 let movies = [];
-const IDs = [];
 
 let movie = '';
-
-
 let id = 0;
 
-const idStorage = localStorage.getItem('id')
 // ================BUTTON'S================
 
 addFilmBtnNode.addEventListener('click', addMovieBtnHandler);
@@ -38,10 +34,7 @@ function init() {
         return;
     }
 
-    // const idStorage = localStorage.getItem('newID')
-
     renderMovies(movies)
-    inactiveElement(idStorage)
 }
 
 function addMovieBtnHandler(event) {
@@ -73,7 +66,7 @@ function getMovieName() {
 
 // Добавление фильма в массив
 function addMovie() {
-    const newMovie = { movie: movie, id: Math.random() };
+    const newMovie = { movie: movie, id: Math.random(), checked: false };
     movies.push(newMovie);
 
     saveMovies();
@@ -94,7 +87,6 @@ function renderMovies(movies) {
         const movieItem = document.createElement('li');
         const movieLabel = document.createElement('label');
         const movieCheckbox = document.createElement('input');
-        const movieInactive = document.createElement('button');
         const movieName = document.createElement('p');
         const movieRemoveBtn = document.createElement('button');
 
@@ -109,7 +101,6 @@ function renderMovies(movies) {
         movieItem.className = 'movie__item';
         movieLabel.className = 'movie__label';
         movieCheckbox.className = 'movie__checkbox';
-        movieInactive.className = 'movie__inactive';
         movieName.className = 'movie__text';
         movieRemoveBtn.className = 'movie__remove';
 
@@ -119,13 +110,18 @@ function renderMovies(movies) {
 
         movieName.innerText = movie.movie;
 
+        checkStateCard(movieItem, movieCheckbox, movie);
+        
         movieItem.addEventListener('click', function (event) {
             if (event.target.classList.contains('movie__item')) {
                 id = movie.id;
                 items = document.querySelector('[data-id="'+id+'"]');
 
                 inactiveElement(id);
-                movieListNode.append(items);
+                // movieListNode.append(items);
+
+                movie.checked = movieCheckbox.checked;
+                saveMovies()
             };
         });
 
@@ -140,38 +136,26 @@ function renderMovies(movies) {
             };
         });
     });
-
-    // inactiveElement(idStorage)
 }
-
-// Сохранение ID в массив
-function saveIdInArray(id) {
-    IDs.push(id);
-    return IDs;
-}
-
-// Поиск индекса по ИД
-// function findIndexID(id) {
-//     const indexID = IDs.findIndex(element => element === id);
-//     console.log(indexID);
-//     return indexID;
-// } 
 
 // "Вычеркивание" карточки
 function inactiveElement(id) {
-    // const newID = id
-
     const movieItem = document.querySelector('[data-id="'+id+'"]')
     const checkboxChecked = document.getElementById(id);
-    console.log(checkboxChecked)
-    console.log(movieItem)
 
     movieItem.classList.toggle('inactive')
     checkboxChecked.toggleAttribute('checked');
+}
 
-    
-
-    localStorage.setItem('id', id)
+// Проверка состояния карточки
+function checkStateCard (movieItem, movieCheckbox, movie) {
+    if (movie.checked) {
+        movieItem.classList.add('inactive');
+        movieCheckbox.setAttribute('checked', '')
+    } else {
+        movieItem.classList.remove('inactive');
+        movieCheckbox.setAttribute('unchecked', '')
+    };
 }
 
 // Поиск объекта в массиве 
