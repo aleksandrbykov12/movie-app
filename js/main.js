@@ -12,6 +12,7 @@ const movieListNode = document.querySelector('.movie__list');
 
 // Global Variables
 let movies = [];
+const IDs = [];
 
 let movie = '';
 
@@ -40,7 +41,7 @@ function init() {
     // const idStorage = localStorage.getItem('newID')
 
     renderMovies(movies)
-    test(idStorage)
+    inactiveElement(idStorage)
 }
 
 function addMovieBtnHandler(event) {
@@ -91,53 +92,40 @@ function renderMovies(movies) {
 
     movies.forEach (movie => {
         const movieItem = document.createElement('li');
+        const movieLabel = document.createElement('label');
+        const movieCheckbox = document.createElement('input');
         const movieInactive = document.createElement('button');
         const movieName = document.createElement('p');
         const movieRemoveBtn = document.createElement('button');
 
-        // const checkItemsClass = localStorage.getItem('checkItemsClass');
-        // const idElement = document.querySelector('[data-id="'+idStorage+'"]');
-        // console.log(idElement)
-        // console.log(idStorage)
-
-        // if (checkItemsClass) {
-        //     idElement.classList.remove('inactive');
-        // } else {
-        //     test(idStorage);
-        // }
-
         movieItem.dataset.id = movie.id;
 
         movieListNode.appendChild(movieItem);
-        // movieItem.appendChild(movieInactive);
-        movieItem.appendChild(movieName);
+        movieItem.appendChild(movieCheckbox);
+        movieItem.appendChild(movieLabel);
+        movieLabel.appendChild(movieName);
         movieItem.appendChild(movieRemoveBtn);
 
         movieItem.className = 'movie__item';
+        movieLabel.className = 'movie__label';
+        movieCheckbox.className = 'movie__checkbox';
         movieInactive.className = 'movie__inactive';
         movieName.className = 'movie__text';
         movieRemoveBtn.className = 'movie__remove';
+
+        movieCheckbox.setAttribute('type', 'checkbox');
+        movieCheckbox.setAttribute('id', movie.id);
+        movieLabel.setAttribute('for', movie.id)
 
         movieName.innerText = movie.movie;
 
         movieItem.addEventListener('click', function (event) {
             if (event.target.classList.contains('movie__item')) {
                 id = movie.id;
-                console.log(id);
-                console.log(idStorage)
                 items = document.querySelector('[data-id="'+id+'"]');
-                // console.log(items);
-                // items.classList.toggle('inactive');
-                const checkItemsClass = items.classList.contains('inactive');
-                localStorage.setItem('checkItemsClass', checkItemsClass);
-                test(id);
+
+                inactiveElement(id);
                 movieListNode.append(items);
-                
-                // if (checkItemsClass) {
-                //     items.classList.remove('inactive');
-                // } else {
-                //     test(id);
-                // }
             };
         });
 
@@ -146,26 +134,42 @@ function renderMovies(movies) {
                 const id = movie.id;
                 console.log(id);
                 index = findElementIsArray(id);
-                // deleteMovie(index);
                 movieItem.classList.add('remove');
                 setTimeout(() => deleteMovie(index), 500);
                 setTimeout(() => renderMovies(movies), 500);
-                // renderMovies(movies);
             };
         });
     });
 
-    test(idStorage)
+    // inactiveElement(idStorage)
 }
 
+// Сохранение ID в массив
+function saveIdInArray(id) {
+    IDs.push(id);
+    return IDs;
+}
+
+// Поиск индекса по ИД
+// function findIndexID(id) {
+//     const indexID = IDs.findIndex(element => element === id);
+//     console.log(indexID);
+//     return indexID;
+// } 
+
 // "Вычеркивание" карточки
-function test(id) {
+function inactiveElement(id) {
     // const newID = id
-    // console.log(newID)
-    const testID = document.querySelector('[data-id="'+id+'"]')
-    console.log(testID)
-    // testID.classList.add('inactive')
-    testID.classList.toggle('inactive')
+
+    const movieItem = document.querySelector('[data-id="'+id+'"]')
+    const checkboxChecked = document.getElementById(id);
+    console.log(checkboxChecked)
+    console.log(movieItem)
+
+    movieItem.classList.toggle('inactive')
+    checkboxChecked.toggleAttribute('checked');
+
+    
 
     localStorage.setItem('id', id)
 }

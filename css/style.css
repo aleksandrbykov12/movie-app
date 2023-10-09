@@ -9,6 +9,28 @@ body {
     max-width: 930px;
 }
 
+.header {
+    margin-left: 70px;
+    margin-top: 50px;
+    display: flex;
+}
+
+.header p {
+    padding: 10px;
+    border: 1px solid #6532F8;
+    border-radius: 200px;
+    background: #6532F8;
+    font-size: 15px;
+    letter-spacing: -0.6px;
+    text-align: center;
+    text-transform: uppercase;
+    font-family: Arimo;
+}
+
+.header__year {
+    width: 75px;
+}
+
 .title {
     margin-left: 70px;
     margin-bottom: 45px;
@@ -26,8 +48,14 @@ body {
     border-radius: 20px;
 }
 
-.movie__form-input {
+.movie__form {
     margin-bottom: 40px;
+    display: flex;
+    gap: 30px;
+}
+
+.movie__form-input {
+    padding: 15px 0;
     width: 50%;
     height: 30px;
     font-size: 30px;
@@ -41,14 +69,20 @@ body {
 }
 
 .movie__form-btn {
-    position: relative;
-    margin-left: 20px;
     width: 62px;
     height: 62px;
     border-radius: 62px;
     outline: 0;
     border: 0;
-    background: #6532f8;
+    background: url(../resources/Vector.png) #6532f8 no-repeat center;
+    background-size: 31px;
+    cursor: pointer;
+    transition: all 0.1s linear;
+}
+
+.movie__form-btn:hover {
+    scale: 1.2;
+    transition: all 0.1s linear;
 }
 
 .movie__list {
@@ -64,8 +98,33 @@ body {
     padding: 0 20px;
     background: #3A3939;
     height: 71px;
-    width: 790px;
+    width: 100%;
     border-radius: 10px;
+}
+
+.movie__label {
+    display: flex;
+    gap: 30px;
+}
+
+.movie__checkbox {
+    position: absolute;
+    z-index: -1;
+    opacity: 0;
+}
+
+.movie__checkbox+label::before {
+    content: '';
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 1px solid #F3F6F9;
+    border-radius: 100px;
+    transition: all 0.5s ease-in-out;
+}
+
+.movie__checkbox:checked+label::before {
+    background: #6532F8;
 }
 
 .movie__text {
