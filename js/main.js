@@ -47,8 +47,6 @@ function addMovieBtnHandler(event) {
     movie = getMovieName();
     addMovie();
 
-    console.log(movies);
-
     clearInput(movieInputNode);
     renderMovies(movies);
 }
@@ -67,7 +65,7 @@ function getMovieName() {
 // Добавление фильма в массив
 function addMovie() {
     const newMovie = { movie: movie, id: Math.random(), checked: false };
-    movies.push(newMovie);
+    movies.unshift(newMovie);
 
     saveMovies();
 
@@ -87,7 +85,6 @@ function renderMovies(movies) {
         const movieItem = document.createElement('li');
         const movieLabel = document.createElement('label');
         const movieCheckbox = document.createElement('input');
-        const movieName = document.createElement('p');
         const movieRemoveBtn = document.createElement('button');
 
         movieItem.dataset.id = movie.id;
@@ -95,56 +92,60 @@ function renderMovies(movies) {
         movieListNode.appendChild(movieItem);
         movieItem.appendChild(movieCheckbox);
         movieItem.appendChild(movieLabel);
-        movieLabel.appendChild(movieName);
         movieItem.appendChild(movieRemoveBtn);
 
         movieItem.className = 'movie__item';
         movieLabel.className = 'movie__label';
         movieCheckbox.className = 'movie__checkbox';
-        movieName.className = 'movie__text';
         movieRemoveBtn.className = 'movie__remove';
 
         movieCheckbox.setAttribute('type', 'checkbox');
         movieCheckbox.setAttribute('id', movie.id);
         movieLabel.setAttribute('for', movie.id)
 
-        movieName.innerText = movie.movie;
+        movieLabel.innerText = movie.movie;
 
         checkStateCard(movieItem, movieCheckbox, movie);
         
         movieItem.addEventListener('click', function (event) {
-            if (event.target.classList.contains('movie__item')) {
-                id = movie.id;
-                const indexMovie = movies.findIndex(element => element.id === movie.id);
-                items = document.querySelector('[data-id="'+id+'"]');
-
-                inactiveElement(id);
-                // movieListNode.append(items);
-
-                movie.checked = movieCheckbox.checked;
-
-                movingObject(movieCheckbox, indexMovie, movie)
-                saveMovies();
-                renderMovies(movies)
-            };
+            if (event.target.classList.contains('movie__label')) {
+                inactiveCardHandler(movie, movieCheckbox);
+            }
         });
 
         movieItem.addEventListener('click', function (event) {
             if (event.target.classList.contains('movie__remove')) {
-                const id = movie.id;
-                console.log(id);
-                index = findElementIsArray(id);
-                movieItem.classList.add('remove');
-                setTimeout(() => deleteMovie(index), 500);
-                setTimeout(() => renderMovies(movies), 500);
+                deleteMovieHandler(movie, movieItem);
             };
         });
     });
 }
 
+function inactiveCardHandler(movie, movieCheckbox) {
+    id = movie.id;
+    const indexMovie = movies.findIndex(element => element.id === movie.id);
+    items = document.querySelector('[data-id="'+id+'"]');
+
+    inactiveElement(id);
+
+    movie.checked = movieCheckbox.checked;
+
+    movingObject(movieCheckbox, indexMovie, movie);
+    saveMovies();
+    renderMovies(movies);
+}
+
+function deleteMovieHandler(movie, movieItem) {
+    const id = movie.id;
+    index = findElementIsArray(id);
+    movieItem.classList.add('remove');
+    setTimeout(() => deleteMovie(index), 500);
+    setTimeout(() => renderMovies(movies), 500);
+}
+
 // "Вычеркивание" карточки
 function inactiveElement(id) {
-    const movieItem = document.querySelector('[data-id="'+id+'"]')
+    const movieItem = document.querySelector('[data-id="'+id+'"]');
     const checkboxChecked = document.getElementById(id);
 
     movieItem.classList.toggle('inactive')
@@ -155,10 +156,10 @@ function inactiveElement(id) {
 function checkStateCard (movieItem, movieCheckbox, movie) {
     if (movie.checked) {
         movieItem.classList.add('inactive');
-        movieCheckbox.setAttribute('checked', '')
+        movieCheckbox.setAttribute('checked', '');
     } else {
         movieItem.classList.remove('inactive');
-        movieCheckbox.setAttribute('unchecked', '')
+        movieCheckbox.setAttribute('unchecked', '');
     };
 }
 
@@ -169,14 +170,13 @@ function movingObject(movieCheckbox, indexMovie, movie) {
         movies.push(movie);
     } else {
         movies.splice(indexMovie, 1)
-        movies.unshift(movie)
-    }
+        movies.unshift(movie);
+    };
 }
 
 // Поиск объекта в массиве 
 function findElementIsArray(id) {
     const index = movies.findIndex(element => element.id === id);
-    console.log(index)
     return index;
 }
 
