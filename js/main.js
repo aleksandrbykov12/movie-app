@@ -86,22 +86,25 @@ function renderMovies(movies) {
         const movieLabel = document.createElement('label');
         const movieCheckbox = document.createElement('input');
         const movieRemoveBtn = document.createElement('button');
+        const movieEditBtn = document.createElement('button');
 
         movieItem.dataset.id = movie.id;
 
         movieListNode.appendChild(movieItem);
         movieItem.appendChild(movieCheckbox);
         movieItem.appendChild(movieLabel);
+        movieItem.appendChild(movieEditBtn);
         movieItem.appendChild(movieRemoveBtn);
 
         movieItem.className = 'movie__item';
         movieLabel.className = 'movie__label';
         movieCheckbox.className = 'movie__checkbox';
+        movieEditBtn.className = 'movie__edit';
         movieRemoveBtn.className = 'movie__remove';
 
         movieCheckbox.setAttribute('type', 'checkbox');
         movieCheckbox.setAttribute('id', movie.id);
-        movieLabel.setAttribute('for', movie.id)
+        movieLabel.setAttribute('for', movie.id);
 
         movieLabel.innerText = movie.movie;
 
@@ -110,7 +113,7 @@ function renderMovies(movies) {
         movieItem.addEventListener('click', function (event) {
             if (event.target.classList.contains('movie__label')) {
                 inactiveCardHandler(movie, movieCheckbox);
-            }
+            };
         });
 
         movieItem.addEventListener('click', function (event) {
@@ -118,6 +121,13 @@ function renderMovies(movies) {
                 deleteMovieHandler(movie, movieItem);
             };
         });
+
+        movieItem.addEventListener('click', (event) => {
+            if (event.target.classList.contains('movie__edit')) {
+                editMovieName(movieLabel, movie)
+            };
+        });
+
     });
 }
 
@@ -141,6 +151,19 @@ function deleteMovieHandler(movie, movieItem) {
     movieItem.classList.add('remove');
     setTimeout(() => deleteMovie(index), 500);
     setTimeout(() => renderMovies(movies), 500);
+}
+
+// Редактирование названия фильма
+const editMovieName = (movieLabel, movie) => {
+    const newMovieName = prompt(`Введите новое название для ${movie.movie}`);
+
+    if (newMovieName === '' || newMovieName == null) {
+        return;
+    };
+
+    movieLabel.innerText = newMovieName;
+    movie.movie = newMovieName;
+    saveMovies();
 }
 
 // "Вычеркивание" карточки

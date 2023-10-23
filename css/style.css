@@ -182,3 +182,19 @@ body {
     scale: 0;
     transition: scale 0.5s ease-in-out;
 }
+
+.movie__edit {
+    margin-right: 10px;
+    width: 25px;
+    height: 23px;
+    background: url(../resources/elit.png) no-repeat;
+    background-size: contain;
+    border: none;
+    cursor: pointer;
+    transition: scale 0.2s linear;
+}
+
+.movie__edit:hover {
+    scale: 1.2;
+    transition: scale 0.2s linear;
+}
