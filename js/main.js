@@ -155,7 +155,7 @@ function deleteMovieHandler(movie, movieItem) {
 
 // Редактирование названия фильма
 const editMovieName = (movieLabel, movie) => {
-    const newMovieName = prompt(`Введите новое название для ${movie.movie}`);
+    const newMovieName = prompt(`Введите новое название для ${movie.movie}`, `${movie.movie}`);
 
     if (newMovieName === '' || newMovieName == null) {
         return;
